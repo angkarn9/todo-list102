@@ -13,14 +13,18 @@ export class TodoListService {
   ) { }
 
   getTodoList(): Observable<TodoList[]> {
-    return this.httpClient.get<TodoList[]>('http://www.mocky.io/v2/5e5b456d3000000e00f9f1e7');
+    return this.httpClient.get<TodoList[]>('http://localhost:3000/todos');
   }
 
   add(param: TodoList): Observable<any> {
-    return this.httpClient.post('http://www.mocky.io/v2/5e5b4cf23000004c00f9f1f0', param);
+    return this.httpClient.post('http://localhost:3000/todos', param);
   }
 
-  update(param: TodoList): Observable<any> {
-    return this.httpClient.put('http://www.mocky.io/v2/5e5b5d583000000e00f9f208', param);
+  update(id: number, param: TodoList): Observable<any> {
+    return this.httpClient.put(`http://localhost:3000/todos/${id}`, param);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.httpClient.delete(`http://localhost:3000/todos/${id}`);
   }
 }

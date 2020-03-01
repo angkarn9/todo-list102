@@ -35,7 +35,7 @@ fdescribe('TodoListService', () => {
         expect(todos).toEqual(expected);
       });
 
-      const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b456d3000000e00f9f1e7');
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos');
       expect(caller.request.method).toEqual('GET');
       caller.flush(expected);
       httpTestingController.verify();
@@ -48,7 +48,7 @@ fdescribe('TodoListService', () => {
         expect(error.statusText === 'Bad request');
       });
 
-      const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b456d3000000e00f9f1e7');
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos');
       expect(caller.request.method).toEqual('GET');
       caller.flush('', {
         status: 400, statusText: 'Bad request'
@@ -71,7 +71,7 @@ fdescribe('TodoListService', () => {
         topic: 'Topic1',
         description: 'Desc1',
       };
-      const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b4cf23000004c00f9f1f0');
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos');
       expect(caller.request.method).toEqual('POST');
       expect(caller.request.body).toEqual(expected);
       caller.flush({});
@@ -91,57 +91,86 @@ fdescribe('TodoListService', () => {
         expect(error.statusText === 'Bad request');
       });
 
-      const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b4cf23000004c00f9f1f0');
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos');
+      expect(caller.request.method).toEqual('POST');
       caller.flush('', {
         status: 400, statusText: 'Bad request'
       });
       httpTestingController.verify();
     });
+  });
 
-    describe('update', () => {
-      it('should call http PUT with todoList and http status response = 200', () => {
-        const param = {
-          id: 1,
-          topic: 'Topic1-edit',
-          description: 'Desc1-edit',
-        };
+  describe('update', () => {
+    it('should call http PUT with todoList and http status response = 200', () => {
+      const param = {
+        id: 1,
+        topic: 'Topic1-edit',
+        description: 'Desc1-edit',
+      };
 
-        service.update(param).subscribe(() => {});
+      service.update(1, param).subscribe(() => {});
 
-        const expected = {
-          id: 1,
-          topic: 'Topic1-edit',
-          description: 'Desc1-edit',
-        };
+      const expected = {
+        id: 1,
+        topic: 'Topic1-edit',
+        description: 'Desc1-edit',
+      };
 
-        const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b5d583000000e00f9f208');
-        expect(caller.request.method).toEqual('PUT');
-        expect(caller.request.body).toEqual(expected);
-        caller.flush({});
-        httpTestingController.verify();
-      });
-
-      it('should return error message when http response fail', () => {
-        const param = {
-          id: 1,
-          topic: 'Topic1-edit',
-          description: 'Desc1-edit',
-        };
-
-        service.update(param).subscribe(() => {
-
-        }, (error: HttpErrorResponse) => {
-          expect(error.status).toEqual(400);
-          expect(error.statusText).toEqual('Bad request');
-        });
-
-        const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b5d583000000e00f9f208');
-        caller.flush('', {
-          status: 400, statusText: 'Bad request'
-        });
-        httpTestingController.verify();
-      });
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos/1');
+      expect(caller.request.method).toEqual('PUT');
+      expect(caller.request.body).toEqual(expected);
+      caller.flush({});
+      httpTestingController.verify();
     });
 
+    it('should return error message when http response fail', () => {
+      const param = {
+        id: 1,
+        topic: 'Topic1-edit',
+        description: 'Desc1-edit',
+      };
+
+      service.update(1, param).subscribe(() => {
+
+      }, (error: HttpErrorResponse) => {
+        expect(error.status).toEqual(400);
+        expect(error.statusText).toEqual('Bad request');
+      });
+
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos/1');
+      expect(caller.request.method).toEqual('PUT');
+      caller.flush('', {
+        status: 400, statusText: 'Bad request'
+      });
+      httpTestingController.verify();
+    });
+  });
+
+  describe('delete', () => {
+    it('should call http DELETE and http status response = 204', () => {
+      service.delete(1).subscribe(() => {});
+
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos/1');
+      expect(caller.request.method).toEqual('DELETE');
+      caller.flush({});
+      httpTestingController.verify();
+    });
+
+    it('should return error message when http response fail', () => {
+
+      service.delete(1).subscribe(() => {
+
+      }, (error: HttpErrorResponse) => {
+        expect(error.status === 400);
+        expect(error.statusText === 'Bad request');
+      });
+
+      const caller = httpTestingController.expectOne('http://localhost:3000/todos/1');
+      expect(caller.request.method).toEqual('DELETE');
+      caller.flush('', {
+        status: 400, statusText: 'Bad request'
+      });
+      httpTestingController.verify();
+    });
   });
 });
