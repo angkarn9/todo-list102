@@ -19,4 +19,8 @@ export class TodoListService {
   add(param: TodoList): Observable<any> {
     return this.httpClient.post('http://www.mocky.io/v2/5e5b4cf23000004c00f9f1f0', param);
   }
+
+  update(param: TodoList): Observable<any> {
+    return this.httpClient.put('http://www.mocky.io/v2/5e5b5d583000000e00f9f208', param);
+  }
 }

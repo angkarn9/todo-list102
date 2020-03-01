@@ -53,6 +53,7 @@ fdescribe('TodoListService', () => {
       caller.flush('', {
         status: 400, statusText: 'Bad request'
       });
+      httpTestingController.verify();
     });
   });
 
@@ -63,9 +64,7 @@ fdescribe('TodoListService', () => {
         topic: 'Topic1',
         description: 'Desc1',
       };
-      service.add(param).subscribe(() => {
-
-      });
+      service.add(param).subscribe(() => {});
 
       const expected = {
         id: 2,
@@ -96,8 +95,53 @@ fdescribe('TodoListService', () => {
       caller.flush('', {
         status: 400, statusText: 'Bad request'
       });
+      httpTestingController.verify();
     });
 
+    describe('update', () => {
+      it('should call http PUT with todoList and http status response = 200', () => {
+        const param = {
+          id: 1,
+          topic: 'Topic1-edit',
+          description: 'Desc1-edit',
+        };
+
+        service.update(param).subscribe(() => {});
+
+        const expected = {
+          id: 1,
+          topic: 'Topic1-edit',
+          description: 'Desc1-edit',
+        };
+
+        const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b5d583000000e00f9f208');
+        expect(caller.request.method).toEqual('PUT');
+        expect(caller.request.body).toEqual(expected);
+        caller.flush({});
+        httpTestingController.verify();
+      });
+
+      it('should return error message when http response fail', () => {
+        const param = {
+          id: 1,
+          topic: 'Topic1-edit',
+          description: 'Desc1-edit',
+        };
+
+        service.update(param).subscribe(() => {
+
+        }, (error: HttpErrorResponse) => {
+          expect(error.status).toEqual(400);
+          expect(error.statusText).toEqual('Bad request');
+        });
+
+        const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b5d583000000e00f9f208');
+        caller.flush('', {
+          status: 400, statusText: 'Bad request'
+        });
+        httpTestingController.verify();
+      });
+    });
 
   });
 });
