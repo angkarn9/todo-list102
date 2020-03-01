@@ -1,0 +1,43 @@
+import { TodoList } from './../model/todo-list';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
+import { TodoListService } from './todo-list.service';
+
+fdescribe('TodoListService', () => {
+  let service: TodoListService;
+  let httpTestingController: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ HttpClientTestingModule ],
+      providers: [ TodoListService ]
+    });
+
+    service = TestBed.get(TodoListService);
+    httpTestingController = TestBed.get(HttpTestingController);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+  describe('get List', () => {
+    it('should return todoList when http response success', () => {
+      const expected = [{
+        id: 1,
+        topic: 'Topic1',
+        description: 'Desc1',
+      }];
+
+      service.getTodoList().subscribe((todos: TodoList[]) => {
+        expect(todos).toEqual(expected);
+      });
+
+      const caller = httpTestingController.expectOne('http://www.mocky.io/v2/5e5b456d3000000e00f9f1e7');
+      expect(caller.request.method).toEqual('GET');
+      caller.flush(expected);
+      httpTestingController.verify();
+    });
+  });
+});
