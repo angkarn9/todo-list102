@@ -5,7 +5,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TodoListService } from './todo-list.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-fdescribe('TodoListService', () => {
+describe('TodoListService', () => {
   let service: TodoListService;
   let httpTestingController: HttpTestingController;
 
