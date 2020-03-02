@@ -7,3 +7,7 @@ npm install json-server
 
 ##Start
 json-server db.json --routes routes.json
+
+
+#Install Bootstrap
+npm install bootstrap
