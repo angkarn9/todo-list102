@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <h1>To do list</h1>
+    <form>
+      <div class="form-group">
+        <label for="inputTopic">Topic</label>
+        <input type="text" class="form-control" id="inputTopic" placeholder="Topic">
+        <div class="invalid-feedback">Please input Topic.</div>
+      </div>
+      <div class="form-group">
+        <label for="inputDescription">Desciption</label>
+        <input type="text" class="form-control" id="inputDescription" placeholder="Description">
+        <div class="invalid-feedback">Please input Desciption.</div>
+      </div>
+      <div class="form-group text-center">
+        <button type="button" class="btn btn-primary" id="btnAdd">Add</button>
+      </div>
+      <div class="form-group text-center">
+        <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+      </div>
+    </form>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Topic</th>
+            <th>Description</th>
+            <th class="button-action">Edit</th>
+            <th class="button-action">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Topic</td>
+            <td>Description</td>
+            <td class="button-action"><button type="button" class="btn btn-info" id="btnEdit">Edit</button></td>
+            <td class="button-action"><button type="button" class="btn btn-danger" id="btnRemove">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
