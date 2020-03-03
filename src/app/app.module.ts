@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TodoManageComponent } from './todo-manage/todo-manage.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TodoManageComponent
   ],
   imports: [
     BrowserModule,
