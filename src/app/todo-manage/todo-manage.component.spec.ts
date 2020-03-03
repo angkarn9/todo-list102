@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TodoManageComponent} from './todo-manage.component';
@@ -17,8 +18,9 @@ describe('TodoManageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TodoManageComponent],
-      providers: [TodoListService, HttpClient, HttpHandler],
-      schemas: [NO_ERRORS_SCHEMA]
+      imports: [ HttpClientTestingModule ],
+      providers: [ TodoListService ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     }).compileComponents();
   }));
 
