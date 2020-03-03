@@ -1,4 +1,4 @@
-import { TodoList } from './../model/todo-list';
+import { TodoList } from '../model/todo-list';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';

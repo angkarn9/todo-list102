@@ -1,22 +1,24 @@
 <div class="container-fluid">
     <h1>To do list</h1>
-    <form>
+    <form [formGroup]="todoListForm">
       <div class="form-group">
         <label for="inputTopic">Topic</label>
-        <input type="text" class="form-control" id="inputTopic" placeholder="Topic">
+        <input type="text" class="form-control" id="inputTopic" placeholder="Topic" formControlName="topic">
         <div class="invalid-feedback">Please input Topic.</div>
       </div>
       <div class="form-group">
         <label for="inputDescription">Description</label>
-        <input type="text" class="form-control" id="inputDescription" placeholder="Description">
+        <input type="text" class="form-control" id="inputDescription" placeholder="Description" formControlName="description">
         <div class="invalid-feedback">Please input Description.</div>
       </div>
+
       <div class="form-group text-center">
-        <button type="button" class="btn btn-primary" id="btnAdd">Add</button>
+        <button type="button" class="btn btn-primary" id="btnAdd" (click)="add()">{{btnLabel}}</button>
       </div>
       <div class="form-group text-center">
-        <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+        <button type="button" class="btn btn-primary" id="btnClear">Clear</button>
       </div>
+
     </form>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -29,13 +31,13 @@
             <th class="button-action">Remove</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Topic</td>
-            <td>Description</td>
+        <tbody >
+          <tr *ngFor="let item of todoList$ | async; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td><label id="topic{{item.id}}">{{item.topic}}</label></td>
+            <td>{{item.description}}</td>
             <td class="button-action"><button type="button" class="btn btn-info" id="btnEdit">Edit</button></td>
-            <td class="button-action"><button type="button" class="btn btn-danger" id="btnRemove">Remove</button></td>
+            <td class="button-action"><button type="button" class="btn btn-danger" id="btnRemove">Reset</button></td>
           </tr>
         </tbody>
       </table>
