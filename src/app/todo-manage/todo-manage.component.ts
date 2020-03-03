@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {TodoListService} from '../service/todo-list.service';
 import {TodoList} from '../model/todo-list';
 import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-manage',
@@ -33,6 +34,6 @@ export class TodoManageComponent implements OnInit {
     const todoList = new TodoList();
     todoList.topic = this.todoListForm.get('topic').value;
     todoList.description = this.todoListForm.get('description').value;
-    this.todoListService.add(todoList).subscribe();
+    this.todoList$ = this.todoListService.add(todoList).pipe(switchMap(() => this.todoListService.getTodoList()));
   }
 }
