@@ -75,6 +75,7 @@ describe('TodoManageComponent', () => {
       const expected = new TodoList();
       expected.topic = 'topic1';
       expected.description = 'description1';
+      component.ngOnInit();
 
       component.todoListForm.controls.topic.setValue('topic1');
       component.todoListForm.controls.description.setValue('description1');
@@ -85,20 +86,17 @@ describe('TodoManageComponent', () => {
     });
 
     it('should append new todo list after add success', () => {
+      component.ngOnInit();
 
       component.todoListForm.controls.topic.setValue('topic2');
       component.todoListForm.controls.description.setValue('description2');
 
-      component.ngOnInit();
       component.add();
 
-      fixture.detectChanges();
       expect(component.todoList).toEqual([
-        {id: 1, topic: 'topic1', description: 'description1'}, {
-          id: 2,
-          topic: 'topic2',
-          description: 'description2'
-        }]);
+        {id: 1, topic: 'topic1', description: 'description1'},
+        {id: 2, topic: 'topic2', description: 'description2'}
+      ]);
 
     });
   });

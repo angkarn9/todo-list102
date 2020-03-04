@@ -17,6 +17,7 @@ export class TodoManageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.todoList = [];
     this.todoListForm = new FormGroup({
       topic: new FormControl(''),
       description: new FormControl('')
