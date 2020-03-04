@@ -1,7 +1,7 @@
-import { FormGroup, FormControl } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
-import { TodoListService } from '../service/todo-list.service';
-import { TodoList } from '../model/todo-list';
+import {FormGroup, FormControl} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {TodoListService} from '../service/todo-list.service';
+import {TodoList} from '../model/todo-list';
 
 @Component({
   selector: 'app-todo-manage',
@@ -24,6 +24,7 @@ export class TodoManageComponent implements OnInit {
       topic: new FormControl(''),
       description: new FormControl('')
     });
+
     this.todoListService.getTodoList().subscribe((todoList) => {
       this.todoList = todoList;
     });

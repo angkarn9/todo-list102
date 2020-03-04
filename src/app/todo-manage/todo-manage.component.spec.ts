@@ -36,6 +36,16 @@ describe('TodoManageComponent', () => {
 
   });
 
+  describe('onInit', () => {
+    it('should get todoList when init', () => {
+      spyOn(todoListService, 'getTodoList').and.returnValue(of([{id: 1, topic: 'topic1', description: 'description1'}]));
+
+      component.ngOnInit();
+
+      expect(todoListService.getTodoList).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
