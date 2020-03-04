@@ -21,6 +21,7 @@ export class TodoManageComponent implements OnInit {
       topic: new FormControl(''),
       description: new FormControl('')
     });
+    console.log(this.todoListService.getTodoList());
     this.todoListService.getTodoList().subscribe((todoList) => {
       this.todoList = todoList;
     });

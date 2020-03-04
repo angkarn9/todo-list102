@@ -1,11 +1,10 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TodoManageComponent} from './todo-manage.component';
 import {FormGroup, FormControl} from '@angular/forms';
 import {TodoListService} from '../service/todo-list.service';
 import {of} from 'rxjs';
-import {HttpClient, HttpHandler} from '@angular/common/http';
 import {TodoList} from '../model/todo-list';
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 
@@ -18,9 +17,9 @@ describe('TodoManageComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TodoManageComponent],
-      imports: [ HttpClientTestingModule ],
-      providers: [ TodoListService ],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      imports: [HttpClientTestingModule],
+      providers: [TodoListService],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
   }));
 
@@ -64,7 +63,11 @@ describe('TodoManageComponent', () => {
 
   describe('add', () => {
     beforeEach(() => {
-      spyOn(todoListService, 'add').and.returnValue(of());
+      spyOn(todoListService, 'add').and.returnValue(of({
+        id: 2,
+        topic: 'topic2',
+        description: 'description2'
+      }));
       spyOn(todoListService, 'getTodoList').and.returnValue(of([{id: 1, topic: 'topic1', description: 'description1'}]));
 
     });
@@ -81,16 +84,23 @@ describe('TodoManageComponent', () => {
       expect(todoListService.add).toHaveBeenCalledWith(expected);
     });
 
-    // it('should call todoListService.getTodoList after Add success', () => {
-    //
-    //   component.todoListForm.controls.topic.setValue('topic1');
-    //   component.todoListForm.controls.description.setValue('description1');
-    //
-    //   component.add();
-    //
-    //   expect(todoListService.getTodoList).toHaveBeenCalledTimes(1);
-    //
-    // });
+    it('should append new todo list after add success', () => {
+
+      component.todoListForm.controls.topic.setValue('topic2');
+      component.todoListForm.controls.description.setValue('description2');
+
+      component.ngOnInit();
+      component.add();
+
+      fixture.detectChanges();
+      expect(component.todoList).toEqual([
+        {id: 1, topic: 'topic1', description: 'description1'}, {
+          id: 2,
+          topic: 'topic2',
+          description: 'description2'
+        }]);
+
+    });
   });
 
 });
