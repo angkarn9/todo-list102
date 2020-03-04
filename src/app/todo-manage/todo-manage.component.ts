@@ -2,7 +2,7 @@ import {FormGroup, FormControl} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {TodoListService} from '../service/todo-list.service';
 import {TodoList} from '../model/todo-list';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, combineLatest, forkJoin, merge, Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
 @Component({
@@ -13,7 +13,8 @@ import {switchMap} from 'rxjs/operators';
 export class TodoManageComponent implements OnInit {
   todoListForm: FormGroup;
   btnLabel = 'Add';
-  todoList$: Observable<TodoList[]>;
+  // todoList$: Observable<TodoList[]>;
+  todoList$ = new BehaviorSubject([]);
 
   constructor(private todoListService: TodoListService) {
   }
@@ -23,7 +24,9 @@ export class TodoManageComponent implements OnInit {
       topic: new FormControl(''),
       description: new FormControl('')
     });
-    this.todoList$ = this.todoListService.getTodoList();
+    this.todoListService.getTodoList().subscribe((todoList) => {
+      this.todoList$.next(todoList);
+    });
   }
 
   resetForm() {
@@ -34,6 +37,9 @@ export class TodoManageComponent implements OnInit {
     const todoList = new TodoList();
     todoList.topic = this.todoListForm.get('topic').value;
     todoList.description = this.todoListForm.get('description').value;
-    this.todoList$ = this.todoListService.add(todoList).pipe(switchMap(() => this.todoListService.getTodoList()));
+    this.todoListService.add(todoList).subscribe((todo) => {
+      this.todoList$.next(this.todoList$.getValue().concat(todo));
+    });
+
   }
 }
