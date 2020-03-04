@@ -12,6 +12,7 @@ export class TodoManageComponent implements OnInit {
   todoListForm: FormGroup;
   btnLabel = 'Add';
   todoList: TodoList[];
+  disabledEditButton = true;
 
   constructor(private todoListService: TodoListService) {
   }
@@ -39,5 +40,12 @@ export class TodoManageComponent implements OnInit {
     this.todoListService.add(todoList).subscribe((todo) => {
       this.todoList.push(todo);
     });
+  }
+
+  edit(id:number){
+    this.todoListForm.get('topic').setValue(this.todoList[id].topic);
+    this.todoListForm.get('description').setValue(this.todoList[id].description);
+
+    this.disabledEditButton = false;
   }
 }

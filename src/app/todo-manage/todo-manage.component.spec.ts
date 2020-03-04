@@ -1,12 +1,12 @@
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {TodoManageComponent} from './todo-manage.component';
-import {FormGroup, FormControl} from '@angular/forms';
-import {TodoListService} from '../service/todo-list.service';
-import {of} from 'rxjs';
-import {TodoList} from '../model/todo-list';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { TodoManageComponent } from './todo-manage.component';
+import { FormGroup, FormControl } from '@angular/forms';
+import { TodoListService } from '../service/todo-list.service';
+import { of } from 'rxjs';
+import { TodoList } from '../model/todo-list';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 
 describe('TodoManageComponent', () => {
@@ -29,6 +29,11 @@ describe('TodoManageComponent', () => {
     todoListService = TestBed.inject(TodoListService);
 
     fixture.detectChanges();
+    component.todoListForm = new FormGroup({
+      topic: new FormControl(''),
+      description: new FormControl('')
+    });
+
   });
 
   it('should create', () => {
@@ -68,7 +73,7 @@ describe('TodoManageComponent', () => {
         topic: 'topic2',
         description: 'description2'
       }));
-      spyOn(todoListService, 'getTodoList').and.returnValue(of([{id: 1, topic: 'topic1', description: 'description1'}]));
+      spyOn(todoListService, 'getTodoList').and.returnValue(of([{ id: 1, topic: 'topic1', description: 'description1' }]));
 
     });
     it('should call todoListService.add when click Add', () => {
@@ -94,11 +99,36 @@ describe('TodoManageComponent', () => {
       component.add();
 
       expect(component.todoList).toEqual([
-        {id: 1, topic: 'topic1', description: 'description1'},
-        {id: 2, topic: 'topic2', description: 'description2'}
+        { id: 1, topic: 'topic1', description: 'description1' },
+        { id: 2, topic: 'topic2', description: 'description2' }
       ]);
 
     });
+  });
+
+  describe('edit', () => {
+    beforeEach(function () {
+      component.todoList = [
+        { id: 1, topic: 'topic1', description: 'description1' },
+        { id: 2, topic: 'topic2', description: 'description2' }
+      ]
+    });
+
+    it('should enable update button when click edit', () => {
+      component.disabledEditButton = true;
+
+      component.edit(1);
+
+      expect(component.disabledEditButton).toBeFalse();
+    });
+
+    it('should set topic and description from edit row when click edit', () => {
+      component.edit(0);
+
+      expect(component.todoListForm.get('topic').value).toEqual('topic1');
+      expect(component.todoListForm.get('description').value).toEqual('description1');
+    });
+
   });
 
 });
