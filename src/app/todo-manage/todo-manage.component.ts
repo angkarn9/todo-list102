@@ -2,8 +2,6 @@ import {FormGroup, FormControl} from '@angular/forms';
 import {Component, OnInit} from '@angular/core';
 import {TodoListService} from '../service/todo-list.service';
 import {TodoList} from '../model/todo-list';
-import {BehaviorSubject, combineLatest, forkJoin, merge, Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-manage',
@@ -13,8 +11,7 @@ import {switchMap} from 'rxjs/operators';
 export class TodoManageComponent implements OnInit {
   todoListForm: FormGroup;
   btnLabel = 'Add';
-  // todoList$: Observable<TodoList[]>;
-  todoList$ = new BehaviorSubject([]);
+  todoList: TodoList[];
 
   constructor(private todoListService: TodoListService) {
   }
@@ -25,7 +22,7 @@ export class TodoManageComponent implements OnInit {
       description: new FormControl('')
     });
     this.todoListService.getTodoList().subscribe((todoList) => {
-      this.todoList$.next(todoList);
+      this.todoList = todoList;
     });
   }
 
@@ -38,8 +35,7 @@ export class TodoManageComponent implements OnInit {
     todoList.topic = this.todoListForm.get('topic').value;
     todoList.description = this.todoListForm.get('description').value;
     this.todoListService.add(todoList).subscribe((todo) => {
-      this.todoList$.next(this.todoList$.getValue().concat(todo));
+      this.todoList.push(todo);
     });
-
   }
 }
