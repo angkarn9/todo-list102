@@ -15,8 +15,8 @@ describe('TodoListService', () => {
       providers: [ TodoListService ]
     });
 
-    service = TestBed.get(TodoListService);
-    httpTestingController = TestBed.get(HttpTestingController);
+    service = TestBed.inject(TodoListService);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {

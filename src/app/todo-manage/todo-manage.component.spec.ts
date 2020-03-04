@@ -107,11 +107,11 @@ describe('TodoManageComponent', () => {
   });
 
   describe('edit', () => {
-    beforeEach(function () {
+    beforeEach(() => {
       component.todoList = [
         { id: 1, topic: 'topic1', description: 'description1' },
         { id: 2, topic: 'topic2', description: 'description2' }
-      ]
+      ];
     });
 
     it('should enable update button when click edit', () => {
@@ -129,6 +129,62 @@ describe('TodoManageComponent', () => {
       expect(component.todoListForm.get('description').value).toEqual('description1');
     });
 
+    it('should set selectItem when click edit row', () => {
+      component.edit(1);
+
+      expect(component.selectItem).toEqual(1);
+    });
+
+  });
+
+  describe('update', () => {
+    beforeEach(() => {
+      component.todoList = [
+        { id: 1, topic: 'topic1', description: 'description1' },
+        { id: 2, topic: 'topic2', description: 'description2' }
+      ];
+    });
+
+    it('should update topic and description to todoList when click update button', () => {
+      component.todoListForm.get('topic').setValue('topicUpdated');
+      component.todoListForm.get('description').setValue('descriptionUpdated');
+
+      component.selectItem = 1;
+
+      component.update();
+
+      expect(component.todoList).toEqual([
+        { id: 1, topic: 'topic1', description: 'description1' },
+        { id: 2, topic: 'topicUpdated', description: 'descriptionUpdated' }
+      ]);
+    });
+
+    it('should hide update button when updated', () => {
+      component.disabledEditButton = false;
+      component.selectItem = 1;
+
+      component.update();
+
+      expect(component.disabledEditButton).toBeTrue();
+    });
+
+    it('should clear selectItem when updated', () => {
+      component.selectItem = 1;
+
+      component.update();
+
+      expect(component.selectItem).toBeUndefined();
+    });
+
+    it('should clear todoListForm when updated', () => {
+      spyOn(component, 'resetForm');
+      component.selectItem = 1;
+
+      component.update();
+
+      expect(component.resetForm).toHaveBeenCalled();
+
+    });
   });
 
 });
