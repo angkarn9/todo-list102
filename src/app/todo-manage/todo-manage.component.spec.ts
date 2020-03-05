@@ -38,7 +38,7 @@ describe('TodoManageComponent', () => {
 
   describe('onInit', () => {
     it('should get todoList when init', () => {
-      spyOn(todoListService, 'getTodoList').and.returnValue(of([{id: 1, topic: 'topic1', description: 'description1'}]));
+      spyOn(todoListService, 'getTodoList').and.returnValue(of([{ id: 1, topic: 'topic1', description: 'description1' }]));
 
       component.ngOnInit();
 
@@ -195,6 +195,19 @@ describe('TodoManageComponent', () => {
       expect(component.resetForm).toHaveBeenCalled();
 
     });
+
+    // fit('should call update service when click update button', () => {
+    //   spyOn(todoListService, 'update').and.returnValue(of());
+
+    //   component.todoListForm.get('topic').setValue('topicUpdated');
+    //   component.todoListForm.get('description').setValue('descriptionUpdated');
+
+    //   component.selectItem = 1;
+
+    //   component.update();
+
+    //   expect(todoListService.update).toHaveBeenCalledWith(1, { id: 2, topic: 'topicUpdated', description: 'descriptionUpdated' });
+    // });
   });
 
 });
