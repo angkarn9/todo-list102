@@ -37,7 +37,7 @@ describe('TodoManageComponent', () => {
   });
 
   describe('onInit', () => {
-    it('should get todoList when init', () => {
+    it('should call todoListService.getTodoList when init component', () => {
       spyOn(todoListService, 'getTodoList').and.returnValue(of([{ id: 1, topic: 'topic1', description: 'description1' }]));
 
       component.ngOnInit();
@@ -73,8 +73,15 @@ describe('TodoManageComponent', () => {
       expect(component.todoListForm.controls.topic.value).toEqual(null);
       expect(component.todoListForm.controls.description.value).toEqual(null);
     });
-  });
 
+    it('should enable button add when click clear button', () => {
+      component.disabledEditButton = false;
+
+      component.resetForm();
+
+      expect(component.disabledEditButton).toBeTruthy();
+    });
+  });
 
   describe('add', () => {
     beforeEach(() => {
@@ -83,14 +90,17 @@ describe('TodoManageComponent', () => {
         topic: 'topic2',
         description: 'description2'
       }));
-      spyOn(todoListService, 'getTodoList').and.returnValue(of([{ id: 1, topic: 'topic1', description: 'description1' }]));
 
+      component.todoList = [
+        { id: 1, topic: 'topic1', description: 'description1' }
+      ];
     });
+
     it('should call todoListService.add when click Add', () => {
-      const expected = new TodoList();
-      expected.topic = 'topic1';
-      expected.description = 'description1';
-      component.ngOnInit();
+      const expected = {
+        topic: 'topic1',
+        description: 'description1'
+      };
 
       component.todoListForm.controls.topic.setValue('topic1');
       component.todoListForm.controls.description.setValue('description1');
@@ -101,7 +111,9 @@ describe('TodoManageComponent', () => {
     });
 
     it('should append new todo list after add success', () => {
-      component.ngOnInit();
+      component.todoList = [
+        { id: 1, topic: 'topic1', description: 'description1' }
+      ];
 
       component.todoListForm.controls.topic.setValue('topic2');
       component.todoListForm.controls.description.setValue('description2');
@@ -112,7 +124,14 @@ describe('TodoManageComponent', () => {
         { id: 1, topic: 'topic1', description: 'description1' },
         { id: 2, topic: 'topic2', description: 'description2' }
       ]);
+    });
 
+    it('should clear todoListForm when added', () => {
+      spyOn(component, 'resetForm');
+
+      component.add();
+
+      expect(component.resetForm).toHaveBeenCalled();
     });
   });
 

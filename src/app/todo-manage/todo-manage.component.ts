@@ -10,7 +10,6 @@ import {TodoList} from '../model/todo-list';
 })
 export class TodoManageComponent implements OnInit {
   todoListForm: FormGroup;
-  btnLabel = 'Add';
   todoList: TodoList[];
   disabledEditButton = true;
   selectItem: number;
@@ -32,14 +31,17 @@ export class TodoManageComponent implements OnInit {
 
   resetForm() {
     this.todoListForm.reset();
+    this.disabledEditButton = true;
   }
 
   add() {
-    const todoList = new TodoList();
-    todoList.topic = this.todoListForm.get('topic').value;
-    todoList.description = this.todoListForm.get('description').value;
-    this.todoListService.add(todoList).subscribe((todo) => {
+    const param = {
+      topic: this.todoListForm.get('topic').value,
+      description: this.todoListForm.get('description').value
+    };
+    this.todoListService.add(param).subscribe((todo) => {
       this.todoList.push(todo);
+      this.resetForm();
     });
   }
 

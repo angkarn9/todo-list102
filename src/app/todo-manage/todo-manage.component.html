@@ -12,14 +12,11 @@
         <div class="invalid-feedback">Please input Description.</div>
       </div>
 
-      <div class="form-group text-center">
+      <div class="form-group text-center todo-list-btn-group">
         <button type="button" class="btn btn-primary" id="btnAdd" *ngIf="disabledEditButton" (click)="add()">Add</button>
         <button type="button" class="btn btn-primary" id="btnUpdate" *ngIf="!disabledEditButton" (click)="update()">Update</button>
+        <button type="button" class="btn btn-secondary" id="btnClear" (click)="resetForm()">Clear</button>
       </div>
-      <div class="form-group text-center">
-        <button type="button" class="btn btn-primary" id="btnClear">Clear</button>
-      </div>
-
     </form>
     <div class="table-responsive">
       <table class="table table-striped">

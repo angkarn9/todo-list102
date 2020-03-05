@@ -16,7 +16,7 @@ export class TodoListService {
     return this.httpClient.get<TodoList[]>('http://localhost:3000/todos');
   }
 
-  add(param: TodoList): Observable<any> {
+  add(param: ITodoListParam): Observable<any> {
     return this.httpClient.post('http://localhost:3000/todos', param);
   }
 
