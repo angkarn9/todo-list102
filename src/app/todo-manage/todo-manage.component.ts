@@ -43,12 +43,12 @@ export class TodoManageComponent implements OnInit {
     });
   }
 
-  edit(id: number) {
-    this.todoListForm.get('topic').setValue(this.todoList[id].topic);
-    this.todoListForm.get('description').setValue(this.todoList[id].description);
+  edit(index: number) {
+    this.todoListForm.get('topic').setValue(this.todoList[index].topic);
+    this.todoListForm.get('description').setValue(this.todoList[index].description);
 
     this.disabledEditButton = false;
-    this.selectItem = id;
+    this.selectItem = index;
   }
 
   update() {

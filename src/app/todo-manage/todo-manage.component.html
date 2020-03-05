@@ -13,7 +13,8 @@
       </div>
 
       <div class="form-group text-center">
-        <button type="button" class="btn btn-primary" id="btnAdd" (click)="add()">{{btnLabel}}</button>
+        <button type="button" class="btn btn-primary" id="btnAdd" *ngIf="disabledEditButton" (click)="add()">Add</button>
+        <button type="button" class="btn btn-primary" id="btnUpdate" *ngIf="!disabledEditButton" (click)="update()">Update</button>
       </div>
       <div class="form-group text-center">
         <button type="button" class="btn btn-primary" id="btnClear">Clear</button>
@@ -27,17 +28,17 @@
             <th>#</th>
             <th>Topic</th>
             <th>Description</th>
-            <th class="button-action">Edit</th>
-            <th class="button-action">Remove</th>
+            <th class="button-action"></th>
+            <th class="button-action"></th>
           </tr>
         </thead>
         <tbody >
-          <tr *ngFor="let item of todoList ; let i = index">
+          <tr *ngFor="let item of todoList; let i = index">
             <th scope="row">{{i+1}}</th>
             <td><label id="topic{{item.id}}">{{item.topic}}</label></td>
             <td>{{item.description}}</td>
-            <td class="button-action"><button type="button" class="btn btn-info" id="btnEdit">Edit</button></td>
-            <td class="button-action"><button type="button" class="btn btn-danger" id="btnRemove">Reset</button></td>
+            <td class="button-action"><button type="button" class="btn btn-info" id="btnEdit" (click)="edit(i)">Edit</button></td>
+            <td class="button-action"><button type="button" class="btn btn-danger" id="btnRemove" (click)="delete(item.id, i)">Delete</button></td>
           </tr>
         </tbody>
       </table>
