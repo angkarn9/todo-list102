@@ -52,10 +52,25 @@ export class TodoManageComponent implements OnInit {
   }
 
   update() {
-    this.todoList[this.selectItem].topic = this.todoListForm.get('topic').value;
-    this.todoList[this.selectItem].description = this.todoListForm.get('description').value;
-    this.disabledEditButton = true;
-    this.selectItem = undefined;
-    this.resetForm();
+    const param = {
+      topic: this.todoListForm.get('topic').value,
+      description: this.todoListForm.get('description').value
+    };
+
+    const todoListSelected = this.todoList[this.selectItem];
+
+    this.todoListService.update(todoListSelected.id, param).subscribe(() => {
+      todoListSelected.topic = this.todoListForm.get('topic').value;
+      todoListSelected.description = this.todoListForm.get('description').value;
+      this.disabledEditButton = true;
+      this.selectItem = undefined;
+      this.resetForm();
+    });
+  }
+
+  delete(id: number, index: number) {
+    this.todoListService.delete(id).subscribe(() => {
+      this.todoList.splice(index, 1);
+    });
   }
 }

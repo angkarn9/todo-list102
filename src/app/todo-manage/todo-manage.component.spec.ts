@@ -153,6 +153,8 @@ describe('TodoManageComponent', () => {
         { id: 1, topic: 'topic1', description: 'description1' },
         { id: 2, topic: 'topic2', description: 'description2' }
       ];
+
+      spyOn(todoListService, 'update').and.returnValue(of({}));
     });
 
     it('should update topic and description to todoList when click update button', () => {
@@ -196,18 +198,40 @@ describe('TodoManageComponent', () => {
 
     });
 
-    // fit('should call update service when click update button', () => {
-    //   spyOn(todoListService, 'update').and.returnValue(of());
+    it('should call update service when click update button', () => {
+      component.todoListForm.get('topic').setValue('topicUpdated');
+      component.todoListForm.get('description').setValue('descriptionUpdated');
 
-    //   component.todoListForm.get('topic').setValue('topicUpdated');
-    //   component.todoListForm.get('description').setValue('descriptionUpdated');
+      component.selectItem = 1;
 
-    //   component.selectItem = 1;
+      component.update();
 
-    //   component.update();
-
-    //   expect(todoListService.update).toHaveBeenCalledWith(1, { id: 2, topic: 'topicUpdated', description: 'descriptionUpdated' });
-    // });
+      expect(todoListService.update).toHaveBeenCalledWith(2, {topic: 'topicUpdated', description: 'descriptionUpdated' });
+    });
   });
 
+  describe('delete', () => {
+    beforeEach(() => {
+      spyOn(todoListService, 'delete').and.returnValue(of({}));
+    });
+
+    it('should call todoListService.delete when click delete button', () => {
+      component.delete(1, 0);
+
+      expect(todoListService.delete).toHaveBeenCalledWith(1);
+    });
+
+    it('should remove item from todoList when click delete button', () => {
+      component.todoList = [
+        { id: 1, topic: 'topic1', description: 'description1' },
+        { id: 2, topic: 'topic2', description: 'description2' }
+      ];
+
+      component.delete(1, 0);
+
+      expect(component.todoList).toEqual([
+        { id: 2, topic: 'topic2', description: 'description2' }
+      ]);
+    });
+  });
 });
